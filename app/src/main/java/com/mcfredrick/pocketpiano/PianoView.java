@@ -3,8 +3,6 @@ package com.mcfredrick.pocketpiano;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,12 +15,18 @@ import static android.graphics.Color.WHITE;
 
 public class PianoView extends View {
 
+    static {
+        System.loadLibrary("jni-bridge");
+    }
+
+    private native void touchEvent(int note, int keyOn);
+
     public static final int numOfDivs = 14; //Used to divide the screen into a set number of keys
     private Paint black, white, onColor;
     private ArrayList<Key> ivory = new ArrayList<>();
     private ArrayList<Key> ebony = new ArrayList<>();
     private int keyWidth, height;
-    private AudioSoundPlayer soundPlayer;
+    private int[] C = {12,24,36,48,60,72,84,96,108,120};
 
     public PianoView(Context context, AttributeSet attributes) {
 
@@ -39,8 +43,6 @@ public class PianoView extends View {
         onColor.setColor(BLUE);
         onColor.setStyle(Paint.Style.FILL);
 
-        soundPlayer = new AudioSoundPlayer(context);
-
     }
 
     @Override
@@ -51,6 +53,14 @@ public class PianoView extends View {
         height = h;
         int count = 15;
 
+        //change whiteNums to a MIDI number corresponding to a C in a particular octave
+        //An array of the possible C values is defined above such that C[4] for example,
+        //corresponds to C4.
+        //Thus, if refNote = C[4], the first (leftmost) key is C4.
+        int refNote=C[4];
+        int whiteNums=refNote;
+        int blackNums=whiteNums+1;
+
         for (int i = 0; i < numOfDivs; i++){
             int left = i * keyWidth;
             int right = left + keyWidth;
@@ -60,13 +70,34 @@ public class PianoView extends View {
             }
 
             RectF rect = new RectF(left, 0, right, h);
-            ivory.add(new Key(rect, i + 1));
+
+            //don't use the numbers that correspond to the black keys
+            while (whiteNums == refNote+1 || whiteNums == refNote+3 || whiteNums == refNote+6
+                    || whiteNums == refNote+8 || whiteNums == refNote+10 || whiteNums == refNote+13
+                    || whiteNums == refNote+15 || whiteNums == refNote+18 || whiteNums == refNote+20
+                    || whiteNums == refNote+22)
+            {
+                whiteNums++;
+            }
+                ivory.add(new Key(rect, whiteNums));
+                whiteNums++;
+
 
             if (i != 0 && i != 3 && i != 7 && i != 10){
                 rect = new RectF((float)(i-1)* keyWidth + 0.5f * keyWidth + 0.25f * keyWidth, 0,
                         (float) i * keyWidth + 0.25f * keyWidth, 0.67f * height);
-                ebony.add(new Key(rect, count));
-                count ++;
+
+                //skip the numbers assigned to the white keys
+                while (blackNums != refNote+1 && blackNums != refNote+3 && blackNums != refNote+6
+                        && blackNums != refNote+8 && blackNums != refNote+10 && blackNums != refNote+13
+                        && blackNums != refNote+15 && blackNums != refNote+18 && blackNums != refNote+20
+                        && blackNums != refNote+22)
+                {
+                    blackNums++;
+                }
+
+                ebony.add(new Key(rect, blackNums));
+                blackNums ++;
             }
 
         }
@@ -99,36 +130,35 @@ public class PianoView extends View {
             float x = event.getX(touchIndex);
             float y = event.getY(touchIndex);
 
-            Key k = keyAtCoords(x,y);
+            Key k = keyAtCoords(x,y); //select the key at the current coordinates
 
             if (k != null) {
-                k.keyOn = isDownAction;
+                k.keyOn = isDownAction; //the key is on if the action is DOWN or MOVE as above
+                int keyOn = k.keyOn ? 1 : 0; //cast the boolean to int to play nicely with C++
+                touchEvent(k.keyID, keyOn); //send the action and the Key ID to JNI bridge
+                super.onTouchEvent(event); //send the event to the parent class
+                invalidate(); //redraw the piano view
             }
 
         }
 
-
+/*
         ArrayList<Key> tmp = new ArrayList<>(ivory);
         tmp.addAll(ebony);
 
         for (Key k : tmp){
-            if (k.keyOn){
-                if (!soundPlayer.isNotePlaying(k.sound)){
-                    soundPlayer.playNote(k.sound);
+                    int keyOn = k.keyOn ? 1 : 0; //cast the boolean to int to play nicely with C++
+                    touchEvent(k.keyID, keyOn); //send the action and the Key ID to JNI bridge
+                    super.onTouchEvent(event); //send the event to the parent class
                     invalidate(); //redraw the PianoView
-                } else {
-                    releaseKey(k);
-                }
-            } else {
-                soundPlayer.stopNote(k.sound);
-                releaseKey(k);
-            }
         }
-
+*/
         return true;
 
     }
 
+
+    //determine which key is at the given coordinates and return the Key, k
     private Key keyAtCoords(float x, float y){
 
         for (Key k : ebony){
@@ -151,27 +181,5 @@ public class PianoView extends View {
 
         return null;
     }
-
-    private void releaseKey(final Key k){
-        handler.postDelayed(new Runnable(){
-
-            @Override
-            public void run() {
-                k.keyOn = false;
-                handler.sendEmptyMessage(0);
-
-            }
-        }, 100);
-    }
-
-    private Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg){
-            invalidate();
-
-        }
-    };
-
 
 }
