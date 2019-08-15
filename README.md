@@ -11,6 +11,6 @@ Dependencies: aaudio library
 
 Full installation instructions are in the works. For now, I recommend using Android Studio and ensuring you're environment is set up to handle native development in C++. I've underlined the critical settings in the photo below.
 
-![C++ for Android Studio settings](link-to-image)
+![C++ for Android Studio settings](https://github.com/mcfredrick/PocketSynth/blob/master/AStudioSettings.png)
 
 Check out the project board if you're interested in my plans for the future of this app.
