@@ -1,4 +1,4 @@
-package com.mcfredrick.pocketpiano;
+package com.mcfredrick.pocketsynth;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,7 +13,7 @@ import static android.graphics.Color.BLACK;
 import static android.graphics.Color.BLUE;
 import static android.graphics.Color.WHITE;
 
-public class PianoView extends View {
+public class SynthView extends View {
 
     static {
         System.loadLibrary("jni-bridge");
@@ -28,7 +28,7 @@ public class PianoView extends View {
     private int keyWidth, height;
     private int[] C = {12,24,36,48,60,72,84,96,108,120};
 
-    public PianoView(Context context, AttributeSet attributes) {
+    public SynthView(Context context, AttributeSet attributes) {
 
         super(context, attributes);
 
@@ -137,7 +137,7 @@ public class PianoView extends View {
                 int keyOn = k.keyOn ? 1 : 0; //cast the boolean to int to play nicely with C++
                 touchEvent(k.keyID, keyOn); //send the action and the Key ID to JNI bridge
                 super.onTouchEvent(event); //send the event to the parent class
-                invalidate(); //redraw the piano view
+                invalidate(); //redraw the synth view
             }
 
         }
@@ -150,7 +150,7 @@ public class PianoView extends View {
                     int keyOn = k.keyOn ? 1 : 0; //cast the boolean to int to play nicely with C++
                     touchEvent(k.keyID, keyOn); //send the action and the Key ID to JNI bridge
                     super.onTouchEvent(event); //send the event to the parent class
-                    invalidate(); //redraw the PianoView
+                    invalidate(); //redraw the SynthView
         }
 */
         return true;

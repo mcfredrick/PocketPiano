@@ -2,8 +2,8 @@
 // Created by mattc on 8/14/2019.
 //
 
-#ifndef POCKETPIANO_VOICEMANAGER_H
-#define POCKETPIANO_VOICEMANAGER_H
+#ifndef POCKETSYNTH_VOICEMANAGER_H
+#define POCKETSYNTH_VOICEMANAGER_H
 
 #include "Voice.h"
 
@@ -19,7 +19,7 @@ public:
 private:
 
     int mSampleRate;
-    static const int NumberOfVoices = 64;   //sets the total number of voices allowed by the synth
+    static const int NumberOfVoices = 16;   //sets the total number of voices allowed by the synth
     Voice voices[NumberOfVoices];           //create all of the voices
 
     Voice* findFreeVoice();                 //find a voice that's not currently in use
@@ -27,4 +27,4 @@ private:
 };
 
 
-#endif //POCKETPIANO_VOICEMANAGER_H
+#endif //POCKETSYNTH_VOICEMANAGER_H

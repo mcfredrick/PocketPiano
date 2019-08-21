@@ -1,4 +1,4 @@
-package com.mcfredrick.pocketpiano;
+package com.mcfredrick.pocketsynth;
 
 import org.junit.Test;
 

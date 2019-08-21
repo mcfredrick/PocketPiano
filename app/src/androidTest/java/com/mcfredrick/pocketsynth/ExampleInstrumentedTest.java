@@ -1,4 +1,4 @@
-package com.mcfredrick.pocketpiano;
+package com.mcfredrick.pocketsynth;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.pocketpiano", appContext.getPackageName());
+        assertEquals("com.example.pocketsynth", appContext.getPackageName());
     }
 }

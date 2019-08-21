@@ -1,4 +1,4 @@
-package com.mcfredrick.pocketpiano;
+package com.mcfredrick.pocketsynth;
 
 import androidx.appcompat.app.AppCompatActivity;
 

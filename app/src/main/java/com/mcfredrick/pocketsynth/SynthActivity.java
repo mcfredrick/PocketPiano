@@ -1,10 +1,10 @@
-package com.mcfredrick.pocketpiano;
+package com.mcfredrick.pocketsynth;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class PianoActivity extends AppCompatActivity {
+public class SynthActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
     static {

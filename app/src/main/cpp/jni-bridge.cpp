@@ -8,7 +8,7 @@ static AudioEngine *audioEngine = new AudioEngine();
 extern "C" {
 
     JNIEXPORT void JNICALL
-    Java_com_mcfredrick_pocketpiano_PianoView_touchEvent(JNIEnv *env,
+    Java_com_mcfredrick_pocketsynth_SynthView_touchEvent(JNIEnv *env,
                                                          jobject instance,
                                                          jint keyId,
                                                          jint keyOn)
@@ -19,7 +19,7 @@ extern "C" {
     }
 
     JNIEXPORT void JNICALL
-    Java_com_mcfredrick_pocketpiano_PianoActivity_startEngine(JNIEnv *env, jobject /* this */)
+    Java_com_mcfredrick_pocketsynth_SynthActivity_startEngine(JNIEnv *env, jobject /* this */)
     {
         //called when the app opens to start an audio stream
         audioEngine->start();
@@ -27,7 +27,7 @@ extern "C" {
     }
 
     JNIEXPORT void JNICALL
-    Java_com_mcfredrick_pocketpiano_PianoActivity_stopEngine(JNIEnv *env, jobject /* this */){
+    Java_com_mcfredrick_pocketsynth_SynthActivity_stopEngine(JNIEnv *env, jobject /* this */){
         //called when the app stops the close the audio stream
         audioEngine->stop();
 

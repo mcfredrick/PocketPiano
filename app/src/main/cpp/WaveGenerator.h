@@ -2,8 +2,8 @@
 // Created by mattc on 8/14/2019.
 //
 
-#ifndef POCKETPIANO_WAVEGENERATOR_H
-#define POCKETPIANO_WAVEGENERATOR_H
+#ifndef POCKETSYNTH_WAVEGENERATOR_H
+#define POCKETSYNTH_WAVEGENERATOR_H
 
 #include <math.h>
 
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //POCKETPIANO_WAVEGENERATOR_H
+#endif //POCKETSYNTH_WAVEGENERATOR_H

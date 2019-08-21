@@ -2,8 +2,8 @@
 // Created by mcfre on 7/23/2019.
 //
 
-#ifndef POCKETPIANO_AUDIOENGINE_H
-#define POCKETPIANO_AUDIOENGINE_H
+#ifndef POCKETSYNTH_AUDIOENGINE_H
+#define POCKETSYNTH_AUDIOENGINE_H
 
 #include "aaudio/AAudio.h"
 #include "VoiceManager.h"
@@ -23,4 +23,4 @@ private:
 };
 
 
-#endif //POCKETPIANO_AUDIOENGINE_H
+#endif //POCKETSYNTH_AUDIOENGINE_H
